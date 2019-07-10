@@ -12,6 +12,7 @@
 		C3DAF26B22D53C60004B9AC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3DAF26922D53C60004B9AC3 /* Main.storyboard */; };
 		C3DAF26D22D53C6C004B9AC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3DAF26C22D53C6C004B9AC3 /* Assets.xcassets */; };
 		C3DAF27022D53C6C004B9AC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3DAF26E22D53C6C004B9AC3 /* LaunchScreen.storyboard */; };
+		C3DAF27922D55B48004B9AC3 /* JikanClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DAF27822D55B48004B9AC3 /* JikanClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		C3DAF26C22D53C6C004B9AC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C3DAF26F22D53C6C004B9AC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C3DAF27122D53C6C004B9AC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3DAF27822D55B48004B9AC3 /* JikanClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JikanClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,39 @@
 		C3DAF26422D53C60004B9AC3 /* animetracker */ = {
 			isa = PBXGroup;
 			children = (
+				C3DAF27A22D55B5C004B9AC3 /* Model */,
+				C3DAF27C22D55BA7004B9AC3 /* View */,
+				C3DAF27B22D55B76004B9AC3 /* Controller */,
 				C3DAF26522D53C60004B9AC3 /* AppDelegate.swift */,
-				C3DAF26722D53C60004B9AC3 /* ViewController.swift */,
 				C3DAF26922D53C60004B9AC3 /* Main.storyboard */,
 				C3DAF26C22D53C6C004B9AC3 /* Assets.xcassets */,
 				C3DAF26E22D53C6C004B9AC3 /* LaunchScreen.storyboard */,
 				C3DAF27122D53C6C004B9AC3 /* Info.plist */,
 			);
 			path = animetracker;
+			sourceTree = "<group>";
+		};
+		C3DAF27A22D55B5C004B9AC3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C3DAF27822D55B48004B9AC3 /* JikanClient.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C3DAF27B22D55B76004B9AC3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C3DAF26722D53C60004B9AC3 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C3DAF27C22D55BA7004B9AC3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +164,7 @@
 			files = (
 				C3DAF26822D53C60004B9AC3 /* ViewController.swift in Sources */,
 				C3DAF26622D53C60004B9AC3 /* AppDelegate.swift in Sources */,
+				C3DAF27922D55B48004B9AC3 /* JikanClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

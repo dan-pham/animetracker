@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SignUpViewController: UIViewController {
     
@@ -18,8 +19,6 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    
-    var textFieldsFilled: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,17 +35,46 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func doneSignUp(_ sender: Any) {
-        checkTextFields()
         
-        if (textFieldsFilled) {
-            navigationController?.popViewController(animated: true)
-        } else {
+        guard let username = usernameTextField.text, let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let email = emailTextField.text, let password = passwordTextField.text else {
             Alerts.showSignUpFailedAlertVC(on: self)
+            return
+        }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            
+            if let error = error {
+                print("Error creating user: ", error)
+                return
+            }
+            
+            guard let uid = user?.user.uid else {
+                return
+            }
+            
+            // User authentication successful
+            let values = ["username": username, "firstName": firstName, "lastName": lastName, "email": email]
+            
+            self.registerUserIntoDatabaseWithUID(uid, values: values as [String : AnyObject])
         }
     }
     
-    func checkTextFields() {
-        textFieldsFilled = (usernameTextField.hasText && firstNameTextField.hasText && lastNameTextField.hasText && emailTextField.hasText && passwordTextField.hasText) ? true : false
+    fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: AnyObject]) {
+        
+        let ref = Database.database().reference()
+        let usersReference = ref.child("users").child(uid)
+        usersReference.updateChildValues(values) { (error, ref) in
+            
+            if let error = error {
+                print("Error updating child values in database: ", error)
+                return
+            }
+            
+            let user = User(dictionary: values)
+            
+            self.navigationController?.popViewController(animated: true)
+        }
+        
     }
     
 }

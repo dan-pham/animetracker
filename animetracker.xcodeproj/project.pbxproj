@@ -11,6 +11,7 @@
 		C309649322D6AACD00C9D2E2 /* AnimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649222D6AACD00C9D2E2 /* AnimeCell.swift */; };
 		C309649522D6AFF800C9D2E2 /* Anime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649422D6AFF800C9D2E2 /* Anime.swift */; };
 		C309649722D6D68F00C9D2E2 /* SampleAnimeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */; };
+		C30BBEB022E3DDD500C10893 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30BBEAF22E3DDD500C10893 /* User.swift */; };
 		C34E9B8622E258E50022D3EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */; };
 		C3DAF26622D53C60004B9AC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DAF26522D53C60004B9AC3 /* AppDelegate.swift */; };
 		C3DAF26822D53C60004B9AC3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DAF26722D53C60004B9AC3 /* DetailViewController.swift */; };
@@ -36,6 +37,7 @@
 		C309649222D6AACD00C9D2E2 /* AnimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeCell.swift; sourceTree = "<group>"; };
 		C309649422D6AFF800C9D2E2 /* Anime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime.swift; sourceTree = "<group>"; };
 		C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAnimeArray.swift; sourceTree = "<group>"; };
+		C30BBEAF22E3DDD500C10893 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C3DAF26222D53C60004B9AC3 /* animetracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = animetracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DAF26522D53C60004B9AC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			children = (
 				C3DAF27822D55B48004B9AC3 /* JikanClient.swift */,
 				C309649422D6AFF800C9D2E2 /* Anime.swift */,
+				C30BBEAF22E3DDD500C10893 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -156,7 +159,6 @@
 				15D75F2C54CC66C1D7FA1DBE /* Pods-animetracker.debug.xcconfig */,
 				0050E1942DB21CDC359829B6 /* Pods-animetracker.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -293,6 +295,7 @@
 				C3DAF26822D53C60004B9AC3 /* DetailViewController.swift in Sources */,
 				C309649322D6AACD00C9D2E2 /* AnimeCell.swift in Sources */,
 				C3DAF28822D56CA2004B9AC3 /* TabBarViewController.swift in Sources */,
+				C30BBEB022E3DDD500C10893 /* User.swift in Sources */,
 				C309649722D6D68F00C9D2E2 /* SampleAnimeArray.swift in Sources */,
 				C3E7E53A22DFBB970009D196 /* WatchLaterViewController.swift in Sources */,
 				C3E7E53822DFBB840009D196 /* CurrentlyWatchingViewController.swift in Sources */,

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 // Alert refactoring referenced from Sean Allen's "UIAlertController Refactor" on YouTube: https://www.youtube.com/watch?v=ZBS2uRP6_2U
 struct Alerts {
@@ -20,7 +21,7 @@ struct Alerts {
     }
     
     static func showSignInFailedAlertVC(on vc: UIViewController) {
-        showBasicAlertVC(on: vc, with: "Sign In Failed", message: "Please enter your email and password")
+        showBasicAlertVC(on: vc, with: "Sign In Failed", message: "Please enter your registered email and password")
     }
     
     static func showSignUpFailedAlertVC(on vc: UIViewController) {
@@ -38,6 +39,13 @@ struct Alerts {
     
     static func showSignOutAlertVC(on vc: UIViewController) {
         showConfirmationAlertVC(on: vc, with: "Sign Out", message: "Are you sure you want to sign out?", action: (UIAlertAction(title: "Sign Out", style: .default) {_ in
+            
+            do {
+                try Auth.auth().signOut()
+            } catch let signOutError {
+                print("Error signing out: ", signOutError)
+            }
+            
             let signInNC = vc.storyboard?.instantiateViewController(withIdentifier: "SignInNavController")
             DispatchQueue.main.async {
                 vc.present(signInNC!, animated: true, completion: nil)

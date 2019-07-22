@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SignInViewController: UIViewController {
     
@@ -16,7 +17,7 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
-    var userConfirmed: Bool = false
+//    var userConfirmed: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,16 +30,40 @@ class SignInViewController: UIViewController {
     }
     
     @IBAction func signIn(_ sender: Any) {
-        confirmUser()
         
-        if (userConfirmed) {
-        navigationController?.isNavigationBarHidden = true
-        
-        let tabBarNavController = storyboard?.instantiateViewController(withIdentifier: "TabBarNavController")
-        present(tabBarNavController!, animated: true)
-        } else {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
             Alerts.showSignInFailedAlertVC(on: self)
+            return
         }
+        
+//        confirmUser()
+        
+//        if (userConfirmed) {
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
+            if let error = error {
+                Alerts.showSignInFailedAlertVC(on: self)
+                print("Error signing in: ", error)
+                return
+            }
+            
+            // User successfully signed in
+            self.navigationController?.isNavigationBarHidden = true
+            
+            let tabBarNavController = self.storyboard?.instantiateViewController(withIdentifier: "TabBarNavController")
+            self.present(tabBarNavController!, animated: true)
+        }
+        
+//        navigationController?.isNavigationBarHidden = true
+//
+//        let tabBarNavController = storyboard?.instantiateViewController(withIdentifier: "TabBarNavController")
+//        present(tabBarNavController!, animated: true)
+        
+        
+//        } else {
+//            Alerts.showSignInFailedAlertVC(on: self)
+//        }
     }
     
     @IBAction func signUp(_ sender: Any) {
@@ -48,9 +73,9 @@ class SignInViewController: UIViewController {
         navigationController?.pushViewController(signUpViewController, animated: true)
     }
     
-    func confirmUser() {
-        userConfirmed = (emailTextField.hasText && passwordTextField.hasText) ? true : false
-    }
+//    func confirmUser() {
+//        userConfirmed = (emailTextField.hasText && passwordTextField.hasText) ? true : false
+//    }
     
 }
 

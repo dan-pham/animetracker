@@ -14,4 +14,12 @@ class Anime: NSObject {
     var episodes: Int?
     var status: String?
     var summary: String?
+    
+//    init(dictionary: [String: AnyObject]) {
+//        self.title = dictionary["title"] as? String
+//        self.image = dictionary["image"] as? UIImage
+//        self.episodes = dictionary["episodes"] as? Int
+//        self.status = dictionary["status"] as? String
+//        self.summary = dictionary["summary"] as? String
+//    }
 }

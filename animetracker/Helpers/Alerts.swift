@@ -28,6 +28,10 @@ struct Alerts {
         showBasicAlertVC(on: vc, with: "Sign Up Failed", message: "Please make sure you fill out every field")
     }
     
+    static func showCreateUserFailedAlertVC(on vc: UIViewController, message: String) {
+        showBasicAlertVC(on: vc, with: "Sign Up Failed", message: message)
+    }
+    
     private static func showConfirmationAlertVC(on vc: UIViewController, with title: String, message: String, action: UIAlertAction) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(action)
@@ -37,20 +41,8 @@ struct Alerts {
         }
     }
     
-    static func showSignOutAlertVC(on vc: UIViewController) {
-        showConfirmationAlertVC(on: vc, with: "Sign Out", message: "Are you sure you want to sign out?", action: (UIAlertAction(title: "Sign Out", style: .default) {_ in
-            
-            do {
-                try Auth.auth().signOut()
-            } catch let signOutError {
-                print("Error signing out: ", signOutError)
-            }
-            
-            let signInNC = vc.storyboard?.instantiateViewController(withIdentifier: "SignInNavController")
-            DispatchQueue.main.async {
-                vc.present(signInNC!, animated: true, completion: nil)
-            }
-        }))
+    static func showSignOutAlertVC(on vc: UIViewController, action: UIAlertAction) {
+        showConfirmationAlertVC(on: vc, with: "Sign Out", message: "Are you sure you want to sign out?", action: action)
     }
-        
+    
 }

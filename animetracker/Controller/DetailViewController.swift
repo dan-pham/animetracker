@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class DetailViewController: UIViewController {
 
@@ -20,11 +21,14 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var watchLaterButton: UIButton!
     @IBOutlet weak var favoritesButton: UIButton!
     
-    var animeTitle = String()
-    var animeImage = UIImage(named: "defaultPlaceholderImage")
-    var numberOfEpisodes = String()
-    var status = String()
-    var summary = String()
+    var anime = Anime()
+    let noListing = "No listing"
+    
+//    var animeTitle = String()
+//    var animeImage = UIImage(named: "defaultPlaceholderImage")
+//    var numberOfEpisodes = Int()
+//    var animeStatus = String()
+//    var animeSummary = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,20 +36,28 @@ class DetailViewController: UIViewController {
         setupButtonComponents()
     }
     
+    var episodes = String()
+    
     func setupViewComponents() {
-        titleLabel.text = animeTitle
+//        titleLabel.text = animeTitle
+        titleLabel.text = anime.title
         titleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         
-        imageView.image = animeImage
+//        imageView.image = animeImage
+        imageView.image = anime.image
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         
-        episodeLabel.text = "Episodes: \(numberOfEpisodes)"
+//        episodeLabel.text = "Episodes: \(numberOfEpisodes)"
+        episodes = (anime.episodes == 0) ? noListing : "\(anime.episodes!)"
+        episodeLabel.text = "Episodes: \(episodes)"
         
-        statusLabel.text = "Status: \(status)"
+//        statusLabel.text = "Status: \(animeStatus)"
+        statusLabel.text = "Status: \(anime.status ?? noListing)"
         
-        summaryTextView.text = summary
+//        summaryTextView.text = animeSummary
+        summaryTextView.text = anime.summary
         summaryTextView.isEditable = false
     }
     
@@ -149,6 +161,73 @@ class DetailViewController: UIViewController {
     @IBAction func addToFavorites(_ sender: Any) {
         print("Add to favorites")
         favoritesIsPressed = buttonPressed(button: favoritesButton, isPressed: favoritesIsPressed)
+        
+        if let image = anime.image {
+            uploadImageToFirebaseStorage(image) { (imageUrl) in
+                self.displayAnimeWithImageUrl(imageUrl, image: image)
+            }
+        }
+        
+    }
+    
+    fileprivate func uploadImageToFirebaseStorage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
+        
+        let imageName = UUID().uuidString
+        let ref = Storage.storage().reference().child("anime_images").child(imageName)
+        
+        if let uploadData = image.jpegData(compressionQuality: 0.2) {
+            ref.putData(uploadData, metadata: nil) { (metadata, error) in
+                if error != nil {
+                    print("Failed to upload image: ", error)
+                    return
+                }
+                
+                ref.downloadURL(completion: { (url, err) in
+                    if let err = err {
+                        print("Failed to download from URL: ", err)
+                        return
+                    }
+                    
+                    completion(url?.absoluteString ?? "")
+                })
+            }
+        }
+    }
+    
+    fileprivate func displayAnimeWithImageUrl(_ imageUrl: String, image: UIImage) {
+        let ref = Database.database().reference().child("favorites")
+        let childRef = ref.childByAutoId()
+        
+        let image = image
+        let title = anime.title
+        let episodes = anime.episodes
+        let status = anime.status
+        let summary = anime.summary
+        
+//        var values: [String: AnyObject] = ["title": title as AnyObject, "image": image as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
+        
+        // Anime attributes
+        var values: [String: AnyObject] = ["title": title as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
+        
+        // Image attributes
+        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": image.size.width as AnyObject, "imageHeight": image.size.height as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        childRef.updateChildValues(values) { (error, ref) in
+            if let error = error {
+                print("Error updating child values for favorites: ", error)
+                return
+            }
+            
+            guard let animeId = childRef.key else {
+                return
+            }
+            
+            let userAnimesRef = ref.child(animeId)
+            userAnimesRef.setValue(1)
+        }
+        
     }
     
 }

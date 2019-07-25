@@ -36,6 +36,11 @@ class SignUpViewController: UIViewController {
     
     @IBAction func doneSignUp(_ sender: Any) {
         
+        guard usernameTextField.hasText, firstNameTextField.hasText, lastNameTextField.hasText, emailTextField.hasText, passwordTextField.hasText else {
+            Alerts.showSignUpFailedAlertVC(on: self)
+            return
+        }
+        
         guard let username = usernameTextField.text, let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let email = emailTextField.text, let password = passwordTextField.text else {
             Alerts.showSignUpFailedAlertVC(on: self)
             return
@@ -44,6 +49,7 @@ class SignUpViewController: UIViewController {
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             
             if let error = error {
+                Alerts.showCreateUserFailedAlertVC(on: self, message: "\(error.localizedDescription)")
                 print("Error creating user: ", error)
                 return
             }
@@ -60,7 +66,6 @@ class SignUpViewController: UIViewController {
     }
     
     fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: AnyObject]) {
-        
         let ref = Database.database().reference()
         let usersReference = ref.child("users").child(uid)
         usersReference.updateChildValues(values) { (error, ref) in
@@ -74,9 +79,7 @@ class SignUpViewController: UIViewController {
             
             self.navigationController?.popViewController(animated: true)
         }
-        
     }
-    
 }
 
 // MARK: - UITextFieldDelegate

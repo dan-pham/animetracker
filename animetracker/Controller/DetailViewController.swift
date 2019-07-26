@@ -24,12 +24,6 @@ class DetailViewController: UIViewController {
     var anime = Anime()
     let noListing = "No listing"
     
-//    var animeTitle = String()
-//    var animeImage = UIImage(named: "defaultPlaceholderImage")
-//    var numberOfEpisodes = Int()
-//    var animeStatus = String()
-//    var animeSummary = String()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewComponents()
@@ -39,24 +33,19 @@ class DetailViewController: UIViewController {
     var episodes = String()
     
     func setupViewComponents() {
-//        titleLabel.text = animeTitle
         titleLabel.text = anime.title
         titleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         
-//        imageView.image = animeImage
         imageView.image = anime.image
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         
-//        episodeLabel.text = "Episodes: \(numberOfEpisodes)"
         episodes = (anime.episodes == 0) ? noListing : "\(anime.episodes!)"
         episodeLabel.text = "Episodes: \(episodes)"
         
-//        statusLabel.text = "Status: \(animeStatus)"
         statusLabel.text = "Status: \(anime.status ?? noListing)"
         
-//        summaryTextView.text = animeSummary
         summaryTextView.text = anime.summary
         summaryTextView.isEditable = false
     }
@@ -203,8 +192,6 @@ class DetailViewController: UIViewController {
         let episodes = anime.episodes
         let status = anime.status
         let summary = anime.summary
-        
-//        var values: [String: AnyObject] = ["title": title as AnyObject, "image": image as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
         
         // Anime attributes
         var values: [String: AnyObject] = ["title": title as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]

@@ -48,6 +48,8 @@ class DetailViewController: UIViewController {
         
         summaryTextView.text = anime.summary
         summaryTextView.isEditable = false
+        
+        
     }
     
     func setupButtonImageColors(button: UIButton) {
@@ -184,8 +186,9 @@ class DetailViewController: UIViewController {
     }
     
     fileprivate func displayAnimeWithImageUrl(_ imageUrl: String, image: UIImage) {
-        let ref = Database.database().reference().child("favorites")
+        let ref = Database.database().reference().child("animes")
         let childRef = ref.childByAutoId()
+        let userId = Auth.auth().currentUser!.uid
         
         let image = image
         let title = anime.title
@@ -211,7 +214,7 @@ class DetailViewController: UIViewController {
                 return
             }
             
-            let userAnimesRef = ref.child(animeId)
+            let userAnimesRef = Database.database().reference().child("user-favorites").child(userId).child(animeId)
             userAnimesRef.setValue(1)
         }
         

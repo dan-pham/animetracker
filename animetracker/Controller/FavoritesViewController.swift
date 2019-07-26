@@ -7,27 +7,60 @@
 //
 
 import UIKit
+import Firebase
 
 class FavoritesViewController: UITableViewController {
     
     let cellId = "cellId"
-    let noListing = "No Listing"
-    
-    let sampleArray = SampleAnimeArray.sharedInstance
+    var animes = [Anime]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
+        animes.removeAll()
         tableView.reloadData()
         tableView.register(AnimeCell.self, forCellReuseIdentifier: cellId)
         TabBarViewController.setupTabBarItem(vc: self, title: "Favorites", imageName: "heart")
         
         self.view.backgroundColor = UIColor.yellow
-        sampleArray.setupSampleAnimeArray()
+        observeUserAnimes()
+    }
+    
+    func observeUserAnimes() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("user-favorites").child(uid)
+        ref.observe(.childAdded, with: { (snapshot) in
+            
+            let animeId = snapshot.key
+            self.fetchAnimeWithAnimeId(animeId: animeId)
+            
+        }, withCancel: nil)
+    }
+    
+    fileprivate func fetchAnimeWithAnimeId(animeId: String) {
+        let animeReference = Database.database().reference().child("animes").child(animeId)
+        animeReference.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let anime = Anime()
+                
+                anime.title = dictionary["title"] as? String
+                anime.episodes = dictionary["episodes"] as? Int
+                anime.status = dictionary["status"] as? String
+                anime.summary = dictionary["summary"] as? String
+                self.animes.append(anime)
+                
+                self.tableView.reloadData()
+                
+            }
+        }, withCancel: nil)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sampleArray.animes.count
+        return animes.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -37,14 +70,14 @@ class FavoritesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! AnimeCell
         
-        let anime = sampleArray.animes[indexPath.row]
+        let anime = animes[indexPath.row]
         cell.anime = anime
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        TabBarViewController.presentDetailVC(vc: self, animes: sampleArray.animes, indexPath: indexPath)
+        TabBarViewController.presentDetailVC(vc: self, animes: animes, indexPath: indexPath)
     }
 
 }

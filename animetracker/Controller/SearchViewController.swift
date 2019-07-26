@@ -20,6 +20,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
+        animes.removeAll()
         tableView.reloadData()
         tableView.register(AnimeCell.self, forCellReuseIdentifier: cellId)
         TabBarViewController.setupTabBarItem(vc: self, title: "Search", imageName: "search")

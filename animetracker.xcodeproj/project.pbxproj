@@ -13,6 +13,8 @@
 		C309649722D6D68F00C9D2E2 /* SampleAnimeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */; };
 		C30BBEB022E3DDD500C10893 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30BBEAF22E3DDD500C10893 /* User.swift */; };
 		C34E9B8622E258E50022D3EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */; };
+		C37752DC22EBBC820086B70C /* TabBarViewController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */; };
+		C37752DE22EBBF270086B70C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DD22EBBF270086B70C /* Extensions.swift */; };
 		C3DAF26622D53C60004B9AC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DAF26522D53C60004B9AC3 /* AppDelegate.swift */; };
 		C3DAF26822D53C60004B9AC3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DAF26722D53C60004B9AC3 /* DetailViewController.swift */; };
 		C3DAF26B22D53C60004B9AC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3DAF26922D53C60004B9AC3 /* Main.storyboard */; };
@@ -39,6 +41,8 @@
 		C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAnimeArray.swift; sourceTree = "<group>"; };
 		C30BBEAF22E3DDD500C10893 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarViewController+handlers.swift"; sourceTree = "<group>"; };
+		C37752DD22EBBF270086B70C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C3DAF26222D53C60004B9AC3 /* animetracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = animetracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DAF26522D53C60004B9AC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3DAF26722D53C60004B9AC3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 				C3DAF27D22D56A77004B9AC3 /* SignInViewController.swift */,
 				C3DAF27F22D56A8C004B9AC3 /* SignUpViewController.swift */,
 				C3DAF28722D56CA2004B9AC3 /* TabBarViewController.swift */,
+				C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */,
 				C3E7E53722DFBB840009D196 /* CurrentlyWatchingViewController.swift */,
 				C3E7E53922DFBB970009D196 /* WatchLaterViewController.swift */,
 				C3E7E53B22DFBBA40009D196 /* FavoritesViewController.swift */,
@@ -149,6 +154,7 @@
 			children = (
 				C3E7E53D22DFBF7F0009D196 /* Alerts.swift */,
 				C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */,
+				C37752DD22EBBF270086B70C /* Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -300,6 +306,8 @@
 				C3E7E53A22DFBB970009D196 /* WatchLaterViewController.swift in Sources */,
 				C3E7E53822DFBB840009D196 /* CurrentlyWatchingViewController.swift in Sources */,
 				C3DAF26622D53C60004B9AC3 /* AppDelegate.swift in Sources */,
+				C37752DC22EBBC820086B70C /* TabBarViewController+handlers.swift in Sources */,
+				C37752DE22EBBF270086B70C /* Extensions.swift in Sources */,
 				C3DAF27922D55B48004B9AC3 /* JikanClient.swift in Sources */,
 				C3DAF28022D56A8C004B9AC3 /* SignUpViewController.swift in Sources */,
 			);

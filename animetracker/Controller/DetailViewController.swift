@@ -22,15 +22,16 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var favoritesButton: UIButton!
     
     var anime = Anime()
+    var episodes = String()
     let noListing = "No listing"
+    
+    var isEntered = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewComponents()
         setupButtonComponents()
     }
-    
-    var episodes = String()
     
     func setupViewComponents() {
         titleLabel.text = anime.title
@@ -41,15 +42,13 @@ class DetailViewController: UIViewController {
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         
-        episodes = (anime.episodes == 0) ? noListing : "\(anime.episodes!)"
+        episodes = (anime.episodes == 0 || anime.episodes == nil) ? noListing : "\(anime.episodes!)"
         episodeLabel.text = "Episodes: \(episodes)"
         
         statusLabel.text = "Status: \(anime.status ?? noListing)"
         
         summaryTextView.text = anime.summary
         summaryTextView.isEditable = false
-        
-        
     }
     
     func setupButtonImageColors(button: UIButton) {
@@ -60,9 +59,140 @@ class DetailViewController: UIViewController {
         setupButtonImageColors(button: favoritesButton)
         setupButtonImageColors(button: watchLaterButton)
         setupButtonImageColors(button: currentlyWatchingButton)
+        
+        checkFirebaseDatabaseForAnime(button: favoritesButton, category: "favorites")
+    }
+    
+    fileprivate func checkFirebaseDatabaseForAnime(button: UIButton, category: String){
+        let uid = Auth.auth().currentUser!.uid
+        let ref = Database.database().reference().child("user-\(category)").child(uid)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let animeDictionary = dictionary.keys
+                let animesReference = Database.database().reference().child("animes")
+                
+                for animeId in animeDictionary {
+                    animesReference.child(animeId).observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        if let animeDetailDictionary = snapshot.value as? [String: AnyObject] {
+                            let animeTitle = animeDetailDictionary["title"] as! String
+                            
+                            if (self.anime.title! == animeTitle) {
+                                self.isEntered = true
+                                button.imageView?.tintColor = UIColor.blue
+                            }
+                        }
+                    }, withCancel: nil)
+                }
+            }
+        }, withCancel: nil)
+    }
+    
+    
+    
+//    var currentlyWatchingIsHighlighted: Bool = false
+//    var watchLaterIsHighlighted: Bool = false
+//    var favoritesIsHighlighted: Bool = false
+//    var count: Int = 0
+    
+    func buttonHighlighted(button: UIButton, isHighlighted: Bool) -> Bool {
+        let buttonIsHighlighted = !isHighlighted
+        button.isHighlighted = buttonIsHighlighted
+        button.imageView?.tintColor = button.isHighlighted ? UIColor.blue : UIColor.lightGray
+        return buttonIsHighlighted
+    }
+    
+    @IBAction func addToCurrentlyWatching(_ sender: Any) {
+        print("Add to currently watching")
+//        currentlyWatchingIsHighlighted = buttonHighlighted(button: currentlyWatchingButton, isHighlighted: currentlyWatchingIsHighlighted)
+    }
+    
+    @IBAction func addToWatchLater(_ sender: Any) {
+        print("Add to watch later")
+//        watchLaterIsHighlighted = buttonHighlighted(button: watchLaterButton, isHighlighted: watchLaterIsHighlighted)
+    }
+    
+    @IBAction func addToFavorites(_ sender: Any) {
+        print("Add to favorites")
+        
+        // TODO: Refactor into a checking function
+        if isEntered {
+            // TODO: Remove from database
+            // Remove anime from favorites in database
+            print("Remove from database")
+        } else {
+            // Add anime to favorites in database
+            if let image = anime.image {
+                uploadImageToFirebaseStorage(image) { (imageUrl) in
+                    self.saveAnimeWithImageUrl(imageUrl)
+                }
+            }
+        }
+    }
+    
+    fileprivate func uploadImageToFirebaseStorage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
+        
+        let imageName = UUID().uuidString
+        let ref = Storage.storage().reference().child("anime_images").child(imageName)
+        
+        if let uploadData = image.jpegData(compressionQuality: 0.5) {
+            ref.putData(uploadData, metadata: nil) { (metadata, error) in
+                if error != nil {
+                    print("Failed to upload image: ", error)
+                    return
+                }
+                
+                ref.downloadURL(completion: { (url, err) in
+                    if let err = err {
+                        print("Failed to download from URL: ", err)
+                        return
+                    }
+                    
+                    completion(url?.absoluteString ?? "")
+                })
+            }
+        }
+    }
+    
+    fileprivate func saveAnimeWithImageUrl(_ imageUrl: String) {
+        let ref = Database.database().reference().child("animes")
+        let childRef = ref.childByAutoId()
+        let userId = Auth.auth().currentUser!.uid
+        
+        let title = anime.title
+        let episodes = anime.episodes
+        let status = anime.status
+        let summary = anime.summary
+        
+        // Anime attributes
+        var values: [String: AnyObject] = ["title": title as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
+        
+        // Image attributes
+        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject]
+        
+        properties.forEach({values[$0] = $1})
+        
+        childRef.updateChildValues(values) { (error, ref) in
+            if let error = error {
+                print("Error updating child values for favorites: ", error)
+                return
+            }
+            
+            guard let animeId = childRef.key else {
+                return
+            }
+            
+            let userAnimesRef = Database.database().reference().child("user-favorites").child(userId).child(animeId)
+            userAnimesRef.setValue(1)
+        }
     }
     
     // Image zoom in and zoom out feature referenced from Let's Build That App's "How to Implement Image Zoom" video https://www.letsbuildthatapp.com/course_video?id=202
+    
+    var startingImageView: UIImageView?
+    var blackBackgroundView: UIView?
+    var startingFrame: CGRect?
     
     @objc func handleZoomTap(tapGesture: UITapGestureRecognizer) {
         if let imageView = tapGesture.view as? UIImageView {
@@ -70,12 +200,8 @@ class DetailViewController: UIViewController {
         }
     }
     
-    var startingImageView: UIImageView?
-    var blackBackgroundView: UIView?
-    var startingFrame: CGRect?
-    
     func performZoomInForStartingImageView(_ startingImageView: UIImageView) {
-
+        
         self.startingImageView = startingImageView
         self.startingImageView?.isHidden = true
         
@@ -125,100 +251,5 @@ class DetailViewController: UIViewController {
             }
         }
     }
-    
-    
-    
-    var currentlyWatchingIsPressed: Bool = false
-    var watchLaterIsPressed: Bool = false
-    var favoritesIsPressed: Bool = false
-    
-    func buttonPressed(button: UIButton, isPressed: Bool) -> Bool {
-        let buttonIsPressed = !isPressed
-        button.isHighlighted = buttonIsPressed
-        button.imageView?.tintColor = button.isHighlighted ? UIColor.blue : UIColor.lightGray
-        return buttonIsPressed
-    }
-    
-    @IBAction func addToCurrentlyWatching(_ sender: Any) {
-        print("Add to currently watching")
-        currentlyWatchingIsPressed = buttonPressed(button: currentlyWatchingButton, isPressed: currentlyWatchingIsPressed)
-    }
-    
-    @IBAction func addToWatchLater(_ sender: Any) {
-        print("Add to watch later")
-        watchLaterIsPressed = buttonPressed(button: watchLaterButton, isPressed: watchLaterIsPressed)
-    }
-    
-    @IBAction func addToFavorites(_ sender: Any) {
-        print("Add to favorites")
-        favoritesIsPressed = buttonPressed(button: favoritesButton, isPressed: favoritesIsPressed)
-        
-        if let image = anime.image {
-            uploadImageToFirebaseStorage(image) { (imageUrl) in
-                self.displayAnimeWithImageUrl(imageUrl, image: image)
-            }
-        }
-        
-    }
-    
-    fileprivate func uploadImageToFirebaseStorage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
-        
-        let imageName = UUID().uuidString
-        let ref = Storage.storage().reference().child("anime_images").child(imageName)
-        
-        if let uploadData = image.jpegData(compressionQuality: 0.2) {
-            ref.putData(uploadData, metadata: nil) { (metadata, error) in
-                if error != nil {
-                    print("Failed to upload image: ", error)
-                    return
-                }
-                
-                ref.downloadURL(completion: { (url, err) in
-                    if let err = err {
-                        print("Failed to download from URL: ", err)
-                        return
-                    }
-                    
-                    completion(url?.absoluteString ?? "")
-                })
-            }
-        }
-    }
-    
-    fileprivate func displayAnimeWithImageUrl(_ imageUrl: String, image: UIImage) {
-        let ref = Database.database().reference().child("animes")
-        let childRef = ref.childByAutoId()
-        let userId = Auth.auth().currentUser!.uid
-        
-        let image = image
-        let title = anime.title
-        let episodes = anime.episodes
-        let status = anime.status
-        let summary = anime.summary
-        
-        // Anime attributes
-        var values: [String: AnyObject] = ["title": title as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
-        
-        // Image attributes
-        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject, "imageWidth": image.size.width as AnyObject, "imageHeight": image.size.height as AnyObject]
-        
-        properties.forEach({values[$0] = $1})
-        
-        childRef.updateChildValues(values) { (error, ref) in
-            if let error = error {
-                print("Error updating child values for favorites: ", error)
-                return
-            }
-            
-            guard let animeId = childRef.key else {
-                return
-            }
-            
-            let userAnimesRef = Database.database().reference().child("user-favorites").child(userId).child(animeId)
-            userAnimesRef.setValue(1)
-        }
-        
-    }
-    
 }
 

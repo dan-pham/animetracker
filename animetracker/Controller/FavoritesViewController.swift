@@ -46,15 +46,21 @@ class FavoritesViewController: UITableViewController {
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let anime = Anime()
+                var imageUrl = String()
                 
                 anime.title = dictionary["title"] as? String
                 anime.episodes = dictionary["episodes"] as? Int
                 anime.status = dictionary["status"] as? String
                 anime.summary = dictionary["summary"] as? String
+                
+                imageUrl = dictionary["imageUrl"] as! String
+                
+                let imageView = UIImageView()
+                imageView.loadImageUsingCacheWithUrlString(imageUrl)
+                anime.image = imageView.image
+                
                 self.animes.append(anime)
-                
                 self.tableView.reloadData()
-                
             }
         }, withCancel: nil)
     }

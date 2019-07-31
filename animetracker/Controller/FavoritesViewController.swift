@@ -55,7 +55,7 @@ class FavoritesViewController: UITableViewController {
                 }
                 
                 self.animesDictionary.removeValue(forKey: animeId)
-                tableView.reloadData()
+                self.handleReloadTable()
             }
         }
     }

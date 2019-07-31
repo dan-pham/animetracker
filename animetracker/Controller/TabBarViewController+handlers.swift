@@ -23,7 +23,20 @@ extension TabBarViewController {
         
         detailVC.anime = anime
         
+        switch vc {
+        case is CurrentlyWatchingViewController:
+            detailVC.isEnteredForCurrentlyWatching = true
+        case is WatchLaterViewController:
+            detailVC.isEnteredForWatchLater = true
+        case is FavoritesViewController:
+            detailVC.isEnteredForFavorites = true
+        default:
+            break
+        }
+        
         vc.navigationController?.pushViewController(detailVC, animated: true)
     }
+    
+    
     
 }

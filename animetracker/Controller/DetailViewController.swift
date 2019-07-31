@@ -23,9 +23,11 @@ class DetailViewController: UIViewController {
     
     var anime = Anime()
     var episodes = String()
-    let noListing = "No listing"
+    var isEnteredForCurrentlyWatching = Bool()
+    var isEnteredForWatchLater = Bool()
+    var isEnteredForFavorites = Bool()
     
-    var isEntered = false
+    let noListing = "No listing"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +63,20 @@ class DetailViewController: UIViewController {
         setupButtonImageColors(button: currentlyWatchingButton)
         
         checkFirebaseDatabaseForAnime(button: favoritesButton, category: "favorites")
+        
+    }
+    
+    func isEnteredForCategory(category: String, isEntered: Bool) {
+        switch category {
+        case "currentlyWatching":
+            isEnteredForCurrentlyWatching = isEntered
+        case "watchLater":
+            isEnteredForWatchLater = isEntered
+        case "favorites":
+            isEnteredForFavorites = isEntered
+        default:
+            return
+        }
     }
     
     fileprivate func checkFirebaseDatabaseForAnime(button: UIButton, category: String){
@@ -79,7 +95,7 @@ class DetailViewController: UIViewController {
                             let animeTitle = animeDetailDictionary["title"] as! String
                             
                             if (self.anime.title! == animeTitle) {
-                                self.isEntered = true
+                                self.isEnteredForCategory(category: category, isEntered: true)
                                 button.imageView?.tintColor = UIColor.blue
                             }
                         }
@@ -89,44 +105,47 @@ class DetailViewController: UIViewController {
         }, withCancel: nil)
     }
     
-    
-    
-//    var currentlyWatchingIsHighlighted: Bool = false
-//    var watchLaterIsHighlighted: Bool = false
-//    var favoritesIsHighlighted: Bool = false
-//    var count: Int = 0
-    
-    func buttonHighlighted(button: UIButton, isHighlighted: Bool) -> Bool {
-        let buttonIsHighlighted = !isHighlighted
-        button.isHighlighted = buttonIsHighlighted
-        button.imageView?.tintColor = button.isHighlighted ? UIColor.blue : UIColor.lightGray
-        return buttonIsHighlighted
-    }
-    
     @IBAction func addToCurrentlyWatching(_ sender: Any) {
         print("Add to currently watching")
-//        currentlyWatchingIsHighlighted = buttonHighlighted(button: currentlyWatchingButton, isHighlighted: currentlyWatchingIsHighlighted)
     }
     
     @IBAction func addToWatchLater(_ sender: Any) {
         print("Add to watch later")
-//        watchLaterIsHighlighted = buttonHighlighted(button: watchLaterButton, isHighlighted: watchLaterIsHighlighted)
     }
     
     @IBAction func addToFavorites(_ sender: Any) {
-        print("Add to favorites")
-        
-        // TODO: Refactor into a checking function
-        if isEntered {
-            // TODO: Remove from database
+        if isEnteredForFavorites {
             // Remove anime from favorites in database
-            print("Remove from database")
+            removeFromFirebase(button: favoritesButton, category: "favorites")
         } else {
             // Add anime to favorites in database
-            if let image = anime.image {
-                uploadImageToFirebaseStorage(image) { (imageUrl) in
-                    self.saveAnimeWithImageUrl(imageUrl)
+            uploadToFirebase(button: favoritesButton, category: "favorites")
+        }
+    }
+    
+    fileprivate func removeFromFirebase(button: UIButton, category: String) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        if let animeId = anime.id {
+            Database.database().reference().child("user-\(category)").child(uid).child(animeId).removeValue { (error, ref) in
+                
+                if error != nil {
+                    print("Failed to delete anime: ", error!.localizedDescription)
+                    return
                 }
+                
+                self.isEnteredForCategory(category: category, isEntered: false)
+                button.imageView?.tintColor = UIColor.lightGray
+            }
+        }
+    }
+    
+    fileprivate func uploadToFirebase(button: UIButton, category: String) {
+        if let image = anime.image {
+            uploadImageToFirebaseStorage(image) { (imageUrl) in
+                self.saveAnimeWithImageUrl(imageUrl, button: button, category: category)
             }
         }
     }
@@ -139,7 +158,7 @@ class DetailViewController: UIViewController {
         if let uploadData = image.jpegData(compressionQuality: 0.5) {
             ref.putData(uploadData, metadata: nil) { (metadata, error) in
                 if error != nil {
-                    print("Failed to upload image: ", error)
+                    print("Failed to upload image: ", error!.localizedDescription)
                     return
                 }
                 
@@ -155,7 +174,7 @@ class DetailViewController: UIViewController {
         }
     }
     
-    fileprivate func saveAnimeWithImageUrl(_ imageUrl: String) {
+    fileprivate func saveAnimeWithImageUrl(_ imageUrl: String, button: UIButton, category: String) {
         let ref = Database.database().reference().child("animes")
         let childRef = ref.childByAutoId()
         let userId = Auth.auth().currentUser!.uid
@@ -182,8 +201,11 @@ class DetailViewController: UIViewController {
                 return
             }
             
-            let userAnimesRef = Database.database().reference().child("user-favorites").child(userId).child(animeId!)
+            let userAnimesRef = Database.database().reference().child("user-\(category)").child(userId).child(animeId!)
             userAnimesRef.setValue(1)
+            
+            self.isEnteredForCategory(category: category, isEntered: true)
+            button.imageView?.tintColor = UIColor.blue
         }
     }
     

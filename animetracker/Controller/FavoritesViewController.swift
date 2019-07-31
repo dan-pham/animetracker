@@ -86,25 +86,30 @@ class FavoritesViewController: UITableViewController {
         animeReference.observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                let anime = Anime()
-                var imageUrl = String()
-                
-                anime.id = dictionary["animeId"] as? String
-                anime.title = dictionary["title"] as? String
-                anime.episodes = dictionary["episodes"] as? Int
-                anime.status = dictionary["status"] as? String
-                anime.summary = dictionary["summary"] as? String
-                
-                imageUrl = dictionary["imageUrl"] as! String
-                
-                let imageView = UIImageView()
-                imageView.loadImageUsingCacheWithUrlString(imageUrl)
-                anime.image = imageView.image
+                let anime = self.createAnimeFromDictionary(dictionary)
                 
                 self.animesDictionary[animeId] = anime
                 self.handleReloadTable()
             }
         }, withCancel: nil)
+    }
+    
+    func createAnimeFromDictionary(_ dictionary: [String: AnyObject]) -> Anime {
+        let anime = Anime()
+        var imageUrl = String()
+        
+        anime.id = dictionary["animeId"] as? String
+        anime.title = dictionary["title"] as? String
+        anime.episodes = dictionary["episodes"] as? Int
+        anime.status = dictionary["status"] as? String
+        anime.summary = dictionary["summary"] as? String
+        
+        imageUrl = dictionary["imageUrl"] as! String
+        
+        let imageView = UIImageView()
+        imageView.loadImageUsingCacheWithUrlString(imageUrl)
+        anime.image = imageView.image
+        return anime
     }
     
     func handleReloadTable() {

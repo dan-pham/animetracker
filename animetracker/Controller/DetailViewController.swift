@@ -58,11 +58,11 @@ class DetailViewController: UIViewController {
     }
     
     func setupButtonComponents() {
-        setupButtonImageColors(button: favoritesButton)
-        setupButtonImageColors(button: watchLaterButton)
         setupButtonImageColors(button: currentlyWatchingButton)
+        setupButtonImageColors(button: watchLaterButton)
+        setupButtonImageColors(button: favoritesButton)
         
-//        checkFirebaseDatabaseForAnime(button: currentlyWatchingButton, category: "currentlyWatching")
+        checkFirebaseDatabaseForAnime(button: currentlyWatchingButton, category: "currentlyWatching")
         checkFirebaseDatabaseForAnime(button: watchLaterButton, category: "watchLater")
         checkFirebaseDatabaseForAnime(button: favoritesButton, category: "favorites")
     }
@@ -107,8 +107,13 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func addToCurrentlyWatching(_ sender: Any) {
-        print("Add to currently watching")
-        
+        if isEnteredForCurrentlyWatching {
+            // Remove anime from currentlyWatching in database
+            removeFromFirebase(button: currentlyWatchingButton, category: "currentlyWatching")
+        } else {
+            // Add anime to currentlyWatching in database
+            uploadToFirebase(button: currentlyWatchingButton, category: "currentlyWatching")
+        }
     }
     
     @IBAction func addToWatchLater(_ sender: Any) {

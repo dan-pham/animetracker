@@ -27,7 +27,9 @@ class DetailViewController: UIViewController {
     var isEnteredForWatchLater = Bool()
     var isEnteredForFavorites = Bool()
     
-    let noListing = "No listing"
+    var startingImageView: UIImageView?
+    var blackBackgroundView: UIView?
+    var startingFrame: CGRect?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,17 +46,13 @@ class DetailViewController: UIViewController {
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         
-        episodes = (anime.episodes == 0 || anime.episodes == nil) ? noListing : "\(anime.episodes!)"
+        episodes = (anime.episodes == 0 || anime.episodes == nil) ? Constants.noListing : "\(anime.episodes!)"
         episodeLabel.text = "Episodes: \(episodes)"
         
-        statusLabel.text = "Status: \(anime.status ?? noListing)"
+        statusLabel.text = "Status: \(anime.status ?? Constants.noListing)"
         
         summaryTextView.text = anime.summary
         summaryTextView.isEditable = false
-    }
-    
-    func setupButtonImageColors(button: UIButton) {
-        button.imageView?.tintColor = UIColor.lightGray
     }
     
     func setupButtonComponents() {
@@ -62,38 +60,42 @@ class DetailViewController: UIViewController {
         setupButtonImageColors(button: watchLaterButton)
         setupButtonImageColors(button: favoritesButton)
         
-        checkFirebaseDatabaseForAnime(button: currentlyWatchingButton, category: "currentlyWatching")
-        checkFirebaseDatabaseForAnime(button: watchLaterButton, category: "watchLater")
-        checkFirebaseDatabaseForAnime(button: favoritesButton, category: "favorites")
+        checkFirebaseDatabaseForAnime(button: currentlyWatchingButton, category: Constants.currentlyWatchingCategory)
+        checkFirebaseDatabaseForAnime(button: watchLaterButton, category: Constants.watchLaterCategory)
+        checkFirebaseDatabaseForAnime(button: favoritesButton, category: Constants.favoritesCategory)
+    }
+    
+    func setupButtonImageColors(button: UIButton) {
+        button.imageView?.tintColor = UIColor.lightGray
     }
     
     func isEnteredForCategory(category: String, isEntered: Bool) {
         switch category {
-        case "currentlyWatching":
+        case Constants.currentlyWatchingCategory:
             isEnteredForCurrentlyWatching = isEntered
-        case "watchLater":
+        case Constants.watchLaterCategory:
             isEnteredForWatchLater = isEntered
-        case "favorites":
+        case Constants.favoritesCategory:
             isEnteredForFavorites = isEntered
         default:
             return
         }
     }
     
-    fileprivate func checkFirebaseDatabaseForAnime(button: UIButton, category: String){
+    func checkFirebaseDatabaseForAnime(button: UIButton, category: String){
         let uid = Auth.auth().currentUser!.uid
         let ref = Database.database().reference().child("user-\(category)").child(uid)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let animeDictionary = dictionary.keys
-                let animesReference = Database.database().reference().child("animes")
+                let animesReference = Database.database().reference().child(Constants.animes)
                 
                 for animeId in animeDictionary {
                     animesReference.child(animeId).observeSingleEvent(of: .value, with: { (snapshot) in
                         
                         if let animeDetailDictionary = snapshot.value as? [String: AnyObject] {
-                            let animeTitle = animeDetailDictionary["title"] as! String
+                            let animeTitle = animeDetailDictionary[Constants.title] as! String
                             
                             if (self.anime.title! == animeTitle) {
                                 self.isEnteredForCategory(category: category, isEntered: true)
@@ -107,40 +109,29 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func addToCurrentlyWatching(_ sender: Any) {
-        if isEnteredForCurrentlyWatching {
-            // Remove anime from currentlyWatching in database
-            removeFromFirebase(button: currentlyWatchingButton, category: "currentlyWatching")
-        } else {
-            // Add anime to currentlyWatching in database
-            uploadToFirebase(button: currentlyWatchingButton, category: "currentlyWatching")
-        }
+        isEnteredForCategory(isEntered: isEnteredForCurrentlyWatching, button: currentlyWatchingButton, category: Constants.currentlyWatchingCategory)
     }
     
     @IBAction func addToWatchLater(_ sender: Any) {
-        if isEnteredForWatchLater {
-            // Remove anime from watchLater in database
-            removeFromFirebase(button: watchLaterButton, category: "watchLater")
-        } else {
-            // Add anime to watchLater in database
-            uploadToFirebase(button: watchLaterButton, category: "watchLater")
-        }
+        isEnteredForCategory(isEntered: isEnteredForWatchLater, button: watchLaterButton, category: Constants.watchLaterCategory)
     }
     
     @IBAction func addToFavorites(_ sender: Any) {
-        if isEnteredForFavorites {
-            // Remove anime from favorites in database
-            removeFromFirebase(button: favoritesButton, category: "favorites")
+        isEnteredForCategory(isEntered: isEnteredForFavorites, button: favoritesButton, category: Constants.favoritesCategory)
+    }
+    
+    func isEnteredForCategory(isEntered: Bool, button: UIButton, category: String) {
+        if isEntered {
+            // Remove anime from category in database
+            removeFromFirebase(button: button, category: category)
         } else {
-            // Add anime to favorites in database
-            uploadToFirebase(button: favoritesButton, category: "favorites")
+            // Add anime to category in database
+            uploadToFirebase(button: button, category: category)
         }
     }
     
-    fileprivate func removeFromFirebase(button: UIButton, category: String) {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
-        
+    func removeFromFirebase(button: UIButton, category: String) {
+        let uid = Auth.auth().currentUser!.uid
         if let animeId = anime.id {
             Database.database().reference().child("user-\(category)").child(uid).child(animeId).removeValue { (error, ref) in
                 
@@ -155,7 +146,7 @@ class DetailViewController: UIViewController {
         }
     }
     
-    fileprivate func uploadToFirebase(button: UIButton, category: String) {
+    func uploadToFirebase(button: UIButton, category: String) {
         if let image = anime.image {
             uploadImageToFirebaseStorage(image) { (imageUrl) in
                 self.saveAnimeWithImageUrl(imageUrl, button: button, category: category)
@@ -163,10 +154,9 @@ class DetailViewController: UIViewController {
         }
     }
     
-    fileprivate func uploadImageToFirebaseStorage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
-        
+    func uploadImageToFirebaseStorage(_ image: UIImage, completion: @escaping (_ imageUrl: String) -> ()) {
         let imageName = UUID().uuidString
-        let ref = Storage.storage().reference().child("anime_images").child(imageName)
+        let ref = Storage.storage().reference().child(Constants.animeImages).child(imageName)
         
         if let uploadData = image.jpegData(compressionQuality: 0.5) {
             ref.putData(uploadData, metadata: nil) { (metadata, error) in
@@ -187,8 +177,8 @@ class DetailViewController: UIViewController {
         }
     }
     
-    fileprivate func saveAnimeWithImageUrl(_ imageUrl: String, button: UIButton, category: String) {
-        let ref = Database.database().reference().child("animes")
+    func saveAnimeWithImageUrl(_ imageUrl: String, button: UIButton, category: String) {
+        let ref = Database.database().reference().child(Constants.animes)
         let childRef = ref.childByAutoId()
         let userId = Auth.auth().currentUser!.uid
         
@@ -201,10 +191,10 @@ class DetailViewController: UIViewController {
         let animeId = anime.id
         
         // Anime attributes
-        var values: [String: AnyObject] = ["animeId": animeId as AnyObject, "title": title as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
+        var values: [String: AnyObject] = [Constants.animeId: animeId as AnyObject, Constants.title: title as AnyObject, Constants.episodes: episodes as AnyObject, Constants.status: status as AnyObject, Constants.summary: summary as AnyObject]
         
         // Image attribute
-        let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject]
+        let properties: [String: AnyObject] = [Constants.imageUrl: imageUrl as AnyObject]
         
         properties.forEach({values[$0] = $1})
         
@@ -221,12 +211,11 @@ class DetailViewController: UIViewController {
             button.imageView?.tintColor = UIColor.blue
         }
     }
-    
-    // Image zoom in and zoom out feature referenced from Let's Build That App's "How to Implement Image Zoom" video https://www.letsbuildthatapp.com/course_video?id=202
-    
-    var startingImageView: UIImageView?
-    var blackBackgroundView: UIView?
-    var startingFrame: CGRect?
+}
+
+// Image zoom in and zoom out feature referenced from Let's Build That App's "How to Implement Image Zoom" video https://www.letsbuildthatapp.com/course_video?id=202
+
+extension DetailViewController {
     
     @objc func handleZoomTap(tapGesture: UITapGestureRecognizer) {
         if let imageView = tapGesture.view as? UIImageView {
@@ -235,7 +224,6 @@ class DetailViewController: UIViewController {
     }
     
     func performZoomInForStartingImageView(_ startingImageView: UIImageView) {
-        
         self.startingImageView = startingImageView
         self.startingImageView?.isHidden = true
         

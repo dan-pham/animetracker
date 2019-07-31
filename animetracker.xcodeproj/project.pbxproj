@@ -10,8 +10,8 @@
 		C309649122D69FE500C9D2E2 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649022D69FE500C9D2E2 /* SearchViewController.swift */; };
 		C309649322D6AACD00C9D2E2 /* AnimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649222D6AACD00C9D2E2 /* AnimeCell.swift */; };
 		C309649522D6AFF800C9D2E2 /* Anime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649422D6AFF800C9D2E2 /* Anime.swift */; };
-		C309649722D6D68F00C9D2E2 /* SampleAnimeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */; };
 		C30BBEB022E3DDD500C10893 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30BBEAF22E3DDD500C10893 /* User.swift */; };
+		C320B2B322F17E7A00F00CD2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320B2B222F17E7A00F00CD2 /* Constants.swift */; };
 		C34E9B8622E258E50022D3EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */; };
 		C37752DC22EBBC820086B70C /* TabBarViewController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */; };
 		C37752DE22EBBF270086B70C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DD22EBBF270086B70C /* Extensions.swift */; };
@@ -38,8 +38,8 @@
 		C309649022D69FE500C9D2E2 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C309649222D6AACD00C9D2E2 /* AnimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeCell.swift; sourceTree = "<group>"; };
 		C309649422D6AFF800C9D2E2 /* Anime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime.swift; sourceTree = "<group>"; };
-		C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAnimeArray.swift; sourceTree = "<group>"; };
 		C30BBEAF22E3DDD500C10893 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C320B2B222F17E7A00F00CD2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarViewController+handlers.swift"; sourceTree = "<group>"; };
 		C37752DD22EBBF270086B70C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				C3E7E53D22DFBF7F0009D196 /* Alerts.swift */,
-				C309649622D6D68F00C9D2E2 /* SampleAnimeArray.swift */,
+				C320B2B222F17E7A00F00CD2 /* Constants.swift */,
 				C37752DD22EBBF270086B70C /* Extensions.swift */,
 			);
 			path = Helpers;
@@ -302,7 +302,6 @@
 				C309649322D6AACD00C9D2E2 /* AnimeCell.swift in Sources */,
 				C3DAF28822D56CA2004B9AC3 /* TabBarViewController.swift in Sources */,
 				C30BBEB022E3DDD500C10893 /* User.swift in Sources */,
-				C309649722D6D68F00C9D2E2 /* SampleAnimeArray.swift in Sources */,
 				C3E7E53A22DFBB970009D196 /* WatchLaterViewController.swift in Sources */,
 				C3E7E53822DFBB840009D196 /* CurrentlyWatchingViewController.swift in Sources */,
 				C3DAF26622D53C60004B9AC3 /* AppDelegate.swift in Sources */,
@@ -310,6 +309,7 @@
 				C37752DE22EBBF270086B70C /* Extensions.swift in Sources */,
 				C3DAF27922D55B48004B9AC3 /* JikanClient.swift in Sources */,
 				C3DAF28022D56A8C004B9AC3 /* SignUpViewController.swift in Sources */,
+				C320B2B322F17E7A00F00CD2 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

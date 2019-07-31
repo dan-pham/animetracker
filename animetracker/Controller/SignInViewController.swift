@@ -44,7 +44,7 @@ class SignInViewController: UIViewController {
             // User successfully signed in
             self.navigationController?.isNavigationBarHidden = true
             
-            let tabBarNavController = self.storyboard?.instantiateViewController(withIdentifier: "TabBarNavController")
+            let tabBarNavController = self.storyboard?.instantiateViewController(withIdentifier: Constants.tabBarNavController)
             self.present(tabBarNavController!, animated: true)
         }
     }
@@ -52,7 +52,7 @@ class SignInViewController: UIViewController {
     @IBAction func signUp(_ sender: Any) {
         navigationController?.isNavigationBarHidden = true
         
-        let signUpViewController = storyboard?.instantiateViewController(withIdentifier: "SignUpViewController") as! SignUpViewController
+        let signUpViewController = storyboard?.instantiateViewController(withIdentifier: Constants.signUpViewController) as! SignUpViewController
         navigationController?.pushViewController(signUpViewController, animated: true)
     }
     

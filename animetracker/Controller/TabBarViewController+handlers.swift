@@ -11,14 +11,25 @@ import Firebase
 
 extension TabBarViewController {
     
+    static func initializeTableView(vc: UIViewController, tableView: UITableView, cellId: String, title: String, imageName: String) {
+        tableView.register(AnimeCell.self, forCellReuseIdentifier: cellId)
+        tableView.allowsMultipleSelectionDuringEditing = true
+        setupTabBarItem(vc: vc, title: title, imageName: imageName)
+        setBackgroundColor(vc: vc)
+    }
+    
     static func setupTabBarItem(vc: UIViewController, title: String, imageName: String) {
         vc.title = title
         let image = UIImage(named: imageName)
         vc.tabBarItem.image = image
     }
     
+    static func setBackgroundColor(vc: UIViewController) {
+        vc.view.backgroundColor = UIColor(red: 170/255, green: 204/255, blue: 223/255, alpha: 1)
+    }
+    
     static func presentDetailVC(vc: UIViewController, animes: [Anime], indexPath: IndexPath) {
-        let detailVC = vc.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        let detailVC = vc.storyboard?.instantiateViewController(withIdentifier: Constants.detailViewController) as! DetailViewController
         let anime = animes[indexPath.item]
         
         detailVC.anime = anime
@@ -36,7 +47,5 @@ extension TabBarViewController {
         
         vc.navigationController?.pushViewController(detailVC, animated: true)
     }
-    
-    
     
 }

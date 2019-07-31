@@ -59,15 +59,15 @@ class SignUpViewController: UIViewController {
             }
             
             // User authentication successful
-            let values = ["username": username, "firstName": firstName, "lastName": lastName, "email": email]
+            let values = [Constants.username: username, Constants.firstName: firstName, Constants.lastName: lastName, Constants.email: email]
             
             self.registerUserIntoDatabaseWithUID(uid, values: values as [String : AnyObject])
         }
     }
     
-    fileprivate func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: AnyObject]) {
+    func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: AnyObject]) {
         let ref = Database.database().reference()
-        let usersReference = ref.child("users").child(uid)
+        let usersReference = ref.child(Constants.users).child(uid)
         usersReference.updateChildValues(values) { (error, ref) in
             
             if let error = error {

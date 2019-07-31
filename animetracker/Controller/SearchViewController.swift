@@ -12,20 +12,18 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
-    let cellId = "cellId"
-    
     var searchUrl = String()
     var animes = [Anime]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
+        TabBarViewController.initializeTableView(vc: self, tableView: tableView, cellId: Constants.cellId, title: Constants.search, imageName: Constants.searchImage)
+        reloadTableView()
+    }
+    
+    func reloadTableView() {
         animes.removeAll()
         tableView.reloadData()
-        tableView.register(AnimeCell.self, forCellReuseIdentifier: cellId)
-        TabBarViewController.setupTabBarItem(vc: self, title: "Search", imageName: "search")
-        
-        self.view.backgroundColor = UIColor.green
     }
     
     // Searchbar implementation referenced from Jared Davidson's "Spotify Search!" on Youtube: https://www.youtube.com/watch?v=Aegohk-3ffo
@@ -48,7 +46,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                         }
 
                         if success {
-                            let status = airing == 0 ? "Finished Airing" : "Airing"
+                            let status = airing == 0 ? Constants.finishedAiring : Constants.airing
                             let anime = Anime()
                             
                             anime.title = title
@@ -65,10 +63,10 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                         }
                     }
                 } else {
-                    print("error: ", error)
+                    print("error: ", error!.localizedDescription)
                 }
             } else {
-                print("error: ", error)
+                print("error: ", error!.localizedDescription)
             }
         }
         self.view.endEditing(true)
@@ -83,7 +81,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! AnimeCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellId, for: indexPath) as! AnimeCell
 
         let animeCell = animes[indexPath.row]
         cell.anime = animeCell

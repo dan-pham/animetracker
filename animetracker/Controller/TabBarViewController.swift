@@ -47,21 +47,6 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
         viewController.viewDidLoad()
     }
     
-    static func setupTabBarItem(vc: UIViewController, title: String, imageName: String) {
-        vc.title = title
-        let image = UIImage(named: imageName)
-        vc.tabBarItem.image = image
-    }
-    
-    static func presentDetailVC(vc: UIViewController, animes: [Anime], indexPath: IndexPath) {
-        let detailVC = vc.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
-        let anime = animes[indexPath.item]
-        
-        detailVC.anime = anime
-        
-        vc.navigationController?.pushViewController(detailVC, animated: true)
-    }
-    
     @IBAction func signOut(_ sender: Any) {
         Alerts.showSignOutAlertVC(on: self, action: (UIAlertAction(title: "Sign Out", style: .default) {_ in
             self.handleSignOut()

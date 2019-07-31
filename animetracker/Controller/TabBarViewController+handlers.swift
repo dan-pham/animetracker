@@ -11,6 +11,19 @@ import Firebase
 
 extension TabBarViewController {
     
-
+    static func setupTabBarItem(vc: UIViewController, title: String, imageName: String) {
+        vc.title = title
+        let image = UIImage(named: imageName)
+        vc.tabBarItem.image = image
+    }
+    
+    static func presentDetailVC(vc: UIViewController, animes: [Anime], indexPath: IndexPath) {
+        let detailVC = vc.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        let anime = animes[indexPath.item]
+        
+        detailVC.anime = anime
+        
+        vc.navigationController?.pushViewController(detailVC, animated: true)
+    }
     
 }

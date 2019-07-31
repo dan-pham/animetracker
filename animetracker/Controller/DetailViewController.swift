@@ -165,10 +165,13 @@ class DetailViewController: UIViewController {
         let status = anime.status
         let summary = anime.summary
         
-        // Anime attributes
-        var values: [String: AnyObject] = ["title": title as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
+        anime.id = childRef.key
+        let animeId = anime.id
         
-        // Image attributes
+        // Anime attributes
+        var values: [String: AnyObject] = ["animeId": animeId as AnyObject, "title": title as AnyObject, "episodes": episodes as AnyObject, "status": status as AnyObject, "summary": summary as AnyObject]
+        
+        // Image attribute
         let properties: [String: AnyObject] = ["imageUrl": imageUrl as AnyObject]
         
         properties.forEach({values[$0] = $1})
@@ -179,11 +182,7 @@ class DetailViewController: UIViewController {
                 return
             }
             
-            guard let animeId = childRef.key else {
-                return
-            }
-            
-            let userAnimesRef = Database.database().reference().child("user-favorites").child(userId).child(animeId)
+            let userAnimesRef = Database.database().reference().child("user-favorites").child(userId).child(animeId!)
             userAnimesRef.setValue(1)
         }
     }

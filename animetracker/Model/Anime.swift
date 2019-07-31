@@ -9,6 +9,7 @@
 import UIKit
 
 class Anime: NSObject {
+    var id: String?
     var title: String?
     var image: UIImage?
     var episodes: Int?

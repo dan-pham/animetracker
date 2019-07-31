@@ -13,17 +13,51 @@ class FavoritesViewController: UITableViewController {
     
     let cellId = "cellId"
     var animes = [Anime]()
+    var animesDictionary = [String: Anime]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-        animes.removeAll()
-        tableView.reloadData()
+        initializeTableView()
+        observeUserAnimes()
+    }
+    
+    func initializeTableView() {
         tableView.register(AnimeCell.self, forCellReuseIdentifier: cellId)
         TabBarViewController.setupTabBarItem(vc: self, title: "Favorites", imageName: "heart")
+        tableView.allowsMultipleSelectionDuringEditing = true
         
+        animes.removeAll()
+        animesDictionary.removeAll()
+        tableView.reloadData()
+        
+        // Remove in final revision
         self.view.backgroundColor = UIColor.yellow
-        observeUserAnimes()
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let anime = self.animes[indexPath.row]
+        
+        if let animeId = anime.id {
+             Database.database().reference().child("user-favorites").child(uid).child(animeId).removeValue { (error, ref) in
+                
+                if error != nil {
+                    print("Failed to delete anime: ", error?.localizedDescription)
+                    return
+                }
+                
+                self.animesDictionary.removeValue(forKey: animeId)
+                tableView.reloadData()
+            }
+        }
     }
     
     func observeUserAnimes() {
@@ -38,6 +72,13 @@ class FavoritesViewController: UITableViewController {
             self.fetchAnimeWithAnimeId(animeId: animeId)
             
         }, withCancel: nil)
+        
+        ref.observe(.childRemoved, with: { (snapshot) in
+            
+            self.animesDictionary.removeValue(forKey: snapshot.key)
+            self.handleReloadTable()
+            
+        }, withCancel: nil)
     }
     
     fileprivate func fetchAnimeWithAnimeId(animeId: String) {
@@ -48,6 +89,7 @@ class FavoritesViewController: UITableViewController {
                 let anime = Anime()
                 var imageUrl = String()
                 
+                anime.id = dictionary["animeId"] as? String
                 anime.title = dictionary["title"] as? String
                 anime.episodes = dictionary["episodes"] as? Int
                 anime.status = dictionary["status"] as? String
@@ -59,10 +101,18 @@ class FavoritesViewController: UITableViewController {
                 imageView.loadImageUsingCacheWithUrlString(imageUrl)
                 anime.image = imageView.image
                 
-                self.animes.append(anime)
-                self.tableView.reloadData()
+                self.animesDictionary[animeId] = anime
+                self.handleReloadTable()
             }
         }, withCancel: nil)
+    }
+    
+    func handleReloadTable() {
+        self.animes = Array(self.animesDictionary.values)
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

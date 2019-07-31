@@ -23,8 +23,8 @@ class FavoritesViewController: UITableViewController {
     
     func initializeTableView() {
         tableView.register(AnimeCell.self, forCellReuseIdentifier: cellId)
-        TabBarViewController.setupTabBarItem(vc: self, title: "Favorites", imageName: "heart")
         tableView.allowsMultipleSelectionDuringEditing = true
+        TabBarViewController.setupTabBarItem(vc: self, title: "Favorites", imageName: "heart")
         
         animes.removeAll()
         animesDictionary.removeAll()

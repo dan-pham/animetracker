@@ -15,31 +15,14 @@ class JikanClient {
     // Shared instance
     static var sharedInstance = JikanClient()
     
-    //searchUrl = "https://api.jikan.moe/v3/search/anime/?q=\(finalKeywords!)&limit=20"
-    
     // Jikan API Endpoints
     enum Endpoints {
         static let base = "https://api.jikan.moe/v3"
         static let animeSearchQuery = "/search/anime/?q="
         static let limit = "&limit=20"
-        
-//
-//        case retrieveAnimeFromJikan
-//
-//        var stringValue: String {
-//            switch self {
-//            case .retrieveAnimeFromJikan:
-//                return Endpoints.base + Endpoints.search + Endpoints.anime + Endpoints.query
-//            }
-//        }
-//
-//        var url: URL {
-//            return URL(string: stringValue)!
-//        }
     }
     
     func retrieveAnimeImage(_ imageUrl: String, completion: @escaping (_ success: Bool, _ image: UIImage?, Error?) -> Void) {
-        
         let task = URLSession.shared.dataTask(with: URL(string: imageUrl)!, completionHandler: { (data, response, error) in
             
             if error != nil {
@@ -54,13 +37,11 @@ class JikanClient {
                 completion(false, nil, error)
                 return
             }
-            
         })
         task.resume()
     }
     
     func retrieveInfoForAnime(url: URL, completion: @escaping (_ success: Bool, _ title: String?, _ imageUrl: String?, _ episodes: Int?, _ airing: Int?, _ summary: String?, Error?) -> Void) {
-        
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             if error != nil {
@@ -70,7 +51,7 @@ class JikanClient {
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, (statusCode == 200) else {
-                debugPrint("Response: \(response)")
+                debugPrint("Error with response: \(response)")
                 completion(false, nil, nil, nil, nil, nil, error)
                 return
             }
@@ -91,14 +72,12 @@ class JikanClient {
             }
             
             guard let results = parsedData["results"] as? [[String: AnyObject]] else {
-                debugPrint("ParsedData: ", parsedData)
                 debugPrint("Error with parsing results")
                 completion(false, nil, nil, nil, nil, nil, error)
                 return
             }
             
             for result in results {
-                
                 guard let title = result["title"] as? String else {
                     debugPrint("Error with parsing title")
                     completion(false, nil, nil, nil, nil, nil, error)
@@ -118,7 +97,6 @@ class JikanClient {
                 }
                 
                 guard let airing = result["airing"] as? Int else {
-                    debugPrint("result: ", result)
                     debugPrint("Error with parsing airing")
                     completion(false, nil, nil, nil, nil, nil, error)
                     return
@@ -135,7 +113,6 @@ class JikanClient {
         }
         task.resume()
     }
-    
 }
 
 

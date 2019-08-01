@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 
+// Image caching referenced from Let's Build That App's "Lets Fix Some Bugs" video https://www.letsbuildthatapp.com/course_video?id=57
 let imageCache = NSCache<AnyObject, AnyObject>()
 
 extension UIImageView {

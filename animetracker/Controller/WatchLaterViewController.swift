@@ -30,6 +30,7 @@ class WatchLaterViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    // Swipe to Delete feature referenced from Let's Build That App's "How to Swipe and Delete Messages in UITableView" video https://www.letsbuildthatapp.com/course_video?id=232
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -52,6 +53,7 @@ class WatchLaterViewController: UITableViewController {
         }
     }
     
+    // Observing snapshots from Firebase loosely referenced from Let's Build That App's "Firebase Chat Messenger" videos https://www.letsbuildthatapp.com/course/Firebase-Chat-Messenger
     func observeUserAnimes() {
         let uid = Auth.auth().currentUser!.uid
         let ref = Database.database().reference().child(Constants.userWatchLater).child(uid)

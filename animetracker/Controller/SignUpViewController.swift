@@ -75,8 +75,6 @@ class SignUpViewController: UIViewController {
                 return
             }
             
-            let user = User(dictionary: values)
-            
             self.navigationController?.popViewController(animated: true)
         }
     }

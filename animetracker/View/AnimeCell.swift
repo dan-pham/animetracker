@@ -9,9 +9,8 @@
 import UIKit
 
 class AnimeCell: UITableViewCell {
-    
-    // Programmatic UI setup method referenced from https://www.letsbuildthatapp.com
-    
+
+    // Programmatic tableView cell setup method referenced from https://www.letsbuildthatapp.com/course_video?id=58
     var anime: Anime? {
         didSet {
             textLabel?.text = anime?.title

@@ -120,6 +120,7 @@ class DetailViewController: UIViewController {
         isEnteredForCategory(isEntered: isEnteredForFavorites, button: favoritesButton, category: Constants.favoritesCategory)
     }
     
+    // Uploading to and removing from Firebase referenced from Let's Build That App's "Firebase Chat Messenger" videos https://www.letsbuildthatapp.com/course/Firebase-Chat-Messenger
     func isEnteredForCategory(isEntered: Bool, button: UIButton, category: String) {
         if isEntered {
             // Remove anime from category in database
@@ -214,7 +215,6 @@ class DetailViewController: UIViewController {
 }
 
 // Image zoom in and zoom out feature referenced from Let's Build That App's "How to Implement Image Zoom" video https://www.letsbuildthatapp.com/course_video?id=202
-
 extension DetailViewController {
     
     @objc func handleZoomTap(tapGesture: UITapGestureRecognizer) {

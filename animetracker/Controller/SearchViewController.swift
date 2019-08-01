@@ -29,7 +29,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         tableView.reloadData()
     }
     
-    // Searchbar implementation referenced from Jared Davidson's "Spotify Search!" on Youtube: https://www.youtube.com/watch?v=Aegohk-3ffo
+    // Searchbar implementation referenced from Jared Davidson's "Spotify Search!" video: https://www.youtube.com/watch?v=Aegohk-3ffo
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         animes.removeAll()
         
@@ -61,7 +61,6 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                             self.animes.append(anime)
                         }
                         DispatchQueue.main.async {
-//                            print("Reloading tableView")
                             self.tableView.reloadData()
                         }
                     }

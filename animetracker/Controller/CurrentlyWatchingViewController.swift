@@ -17,11 +17,14 @@ class CurrentlyWatchingViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         TabBarViewController.initializeTableView(vc: self, tableView: tableView, cellId: Constants.cellId, title: Constants.currentlyWatching, imageName: Constants.mainMenu)
-        reloadTableView()
+        setupTableView()
         observeUserAnimes()
     }
     
-    func reloadTableView() {
+    func setupTableView() {
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 112, right: 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 112, right: 0)
+        
         animes.removeAll()
         animesDictionary.removeAll()
         tableView.reloadData()

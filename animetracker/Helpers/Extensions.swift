@@ -20,6 +20,7 @@ extension UIImageView {
         // Check cache for image first
         if let cachedImage = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
             self.image = cachedImage
+            return
         }
         
         // Otherwise download the image into cache

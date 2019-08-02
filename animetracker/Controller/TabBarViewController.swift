@@ -31,7 +31,7 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     func reloadViewControllers() {
         let viewControllers = self.viewControllers
-        
+
         for viewController in viewControllers! {
             viewController.loadView()
             viewController.viewDidLoad()
@@ -44,7 +44,7 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        viewController.loadView()
+        viewController.loadViewIfNeeded()
         viewController.viewDidLoad()
     }
     

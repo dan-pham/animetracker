@@ -22,9 +22,6 @@ class CurrentlyWatchingViewController: UITableViewController {
     }
     
     func setupTableView() {
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 112, right: 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 112, right: 0)
-        
         animes.removeAll()
         animesDictionary.removeAll()
         tableView.reloadData()
@@ -103,8 +100,12 @@ class CurrentlyWatchingViewController: UITableViewController {
         return anime
     }
     
+    // Alphabetical array sort referenced from StackOverflow post "Swift: Sort array of objects alphabetically" https://stackoverflow.com/questions/26719744/swift-sort-array-of-objects-alphabetically
     func handleReloadTable() {
         self.animes = Array(self.animesDictionary.values)
+        self.animes.sort { (anime1, anime2) -> Bool in
+            return anime1.title! < anime2.title!
+        }
         
         DispatchQueue.main.async {
             self.tableView.reloadData()

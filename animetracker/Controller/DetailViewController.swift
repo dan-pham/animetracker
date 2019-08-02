@@ -33,6 +33,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TabBarViewController.setBackgroundColor(vc: self.view)
         setupViewComponents()
         setupButtonComponents()
     }
@@ -53,6 +54,7 @@ class DetailViewController: UIViewController {
         
         summaryTextView.text = anime.summary
         summaryTextView.isEditable = false
+        TabBarViewController.setBackgroundColor(vc: summaryTextView)
     }
     
     func setupButtonComponents() {

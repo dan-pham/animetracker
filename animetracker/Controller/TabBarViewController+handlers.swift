@@ -15,7 +15,7 @@ extension TabBarViewController {
         tableView.register(AnimeCell.self, forCellReuseIdentifier: cellId)
         tableView.allowsMultipleSelectionDuringEditing = true
         setupTabBarItem(vc: vc, title: title, imageName: imageName)
-        setBackgroundColor(vc: vc)
+        setBackgroundColor(vc: vc.view)
     }
     
     static func setupTabBarItem(vc: UIViewController, title: String, imageName: String) {
@@ -24,8 +24,12 @@ extension TabBarViewController {
         vc.tabBarItem.image = image
     }
     
-    static func setBackgroundColor(vc: UIViewController) {
-        vc.view.backgroundColor = UIColor(red: 170/255, green: 204/255, blue: 223/255, alpha: 1)
+//    static func setBackgroundColor(vc: UIViewController) {
+//        vc.view.backgroundColor = UIColor(red: 170/255, green: 204/255, blue: 223/255, alpha: 1)
+//    }
+    
+    static func setBackgroundColor(vc: UIView) {
+        vc.backgroundColor = UIColor(red: 170/255, green: 204/255, blue: 223/255, alpha: 1)
     }
     
     static func presentDetailVC(vc: UIViewController, animes: [Anime], indexPath: IndexPath) {

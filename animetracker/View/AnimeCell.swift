@@ -54,7 +54,7 @@ class AnimeCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        
+        TabBarViewController.setBackgroundColor(vc: self)
         addSubview(animeImageView)
         
         // x, y, width, height anchors

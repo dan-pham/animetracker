@@ -22,6 +22,7 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TabBarViewController.setBackgroundColor(vc: self.view)
         delegateTextFields()
     }
     

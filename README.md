@@ -2,6 +2,16 @@
 This repository contains the animetracker app for Udacity's Capstone Project. This app connects to a public RESTful API (Jikan) to 
 download animes and utilizes Firebase to save user registration information, as well as user anime lists.
 
+## Technical Requirements
+iOS Version 12.3+
+Xcode Version 10.3
+
+## Build Instructions
+1. Download the project's ZIP file and extract the project's files
+2. Open the animetracker-master folder and click on the animetracker.xcworkspace file
+3. Select a physical iPhone or an iPhone simulator
+4. Click the play button to build and run the app
+
 ## Overview
 When the user first opens the app, the user will be presented with the sign in screen. If the user has not created an account with 
 animetracker yet, the user can go to the sign up screen to register. After the user is registered, the user will be taken back to the 

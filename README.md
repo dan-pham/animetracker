@@ -3,8 +3,8 @@ This repository contains the animetracker app for Udacity's Capstone Project. Th
 download animes and utilizes Firebase to save user registration information, as well as user anime lists.
 
 ## Technical Requirements
-iOS Version 12.3+
-Xcode Version 10.3
+* iOS Version 12.3+
+* Xcode Version 10.3
 
 ## Build Instructions
 1. Download the project's ZIP file and extract the project's files

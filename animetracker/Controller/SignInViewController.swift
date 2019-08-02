@@ -17,6 +17,8 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     
+    let activityIndicator = ActivityIndicator()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         TabBarViewController.setBackgroundColor(vc: self.view)
@@ -34,16 +36,20 @@ class SignInViewController: UIViewController {
             Alerts.showSignInFailedAlertVC(on: self)
             return
         }
+        
+        activityIndicator.showActivityIndicator()
     
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let error = error {
-                Alerts.showSignInFailedAlertVC(on: self)
+                self.activityIndicator.hideActivityIndicator()
+                Alerts.showAuthenticateUserFailedAlertVC(on: self, message: "\(error.localizedDescription)")
                 print("Error signing in: ", error)
                 return
             }
             
             // User successfully signed in
             self.navigationController?.isNavigationBarHidden = true
+            self.activityIndicator.hideActivityIndicator()
             
             let tabBarNavController = self.storyboard?.instantiateViewController(withIdentifier: Constants.tabBarNavController)
             self.present(tabBarNavController!, animated: true)

@@ -24,10 +24,6 @@ extension TabBarViewController {
         vc.tabBarItem.image = image
     }
     
-//    static func setBackgroundColor(vc: UIViewController) {
-//        vc.view.backgroundColor = UIColor(red: 170/255, green: 204/255, blue: 223/255, alpha: 1)
-//    }
-    
     static func setBackgroundColor(vc: UIView) {
         vc.backgroundColor = UIColor(red: 170/255, green: 204/255, blue: 223/255, alpha: 1)
     }

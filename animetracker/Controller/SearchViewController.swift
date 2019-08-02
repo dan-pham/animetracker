@@ -14,6 +14,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     
     var searchUrl = String()
     var animes = [Anime]()
+    let activityIndicator = ActivityIndicator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +29,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     
     // Searchbar implementation referenced from Jared Davidson's "Spotify Search!" video: https://www.youtube.com/watch?v=Aegohk-3ffo
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        activityIndicator.showActivityIndicator()
         animes.removeAll()
         
         let keywords = searchBar.text
@@ -42,6 +44,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                 if let imageUrl = imageUrl {
                     JikanClient.sharedInstance.retrieveAnimeImage(imageUrl) { (success, image, error) in
                         if error != nil {
+                            Alerts.showSearchImageFailedAlertVC(on: self)
                             debugPrint("Error: ", error)
                         }
 
@@ -57,14 +60,18 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                             
                             self.animes.append(anime)
                         }
+                        
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
+                            self.activityIndicator.hideActivityIndicator()
                         }
                     }
                 } else {
+                    Alerts.showSearchImageUrlFailedAlertVC(on: self)
                     print("error: ", error!.localizedDescription)
                 }
             } else {
+                Alerts.showSearchInformationFailedAlertVC(on: self)
                 print("error: ", error!.localizedDescription)
             }
         }

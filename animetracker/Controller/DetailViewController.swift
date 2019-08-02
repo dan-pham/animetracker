@@ -31,11 +31,14 @@ class DetailViewController: UIViewController {
     var blackBackgroundView: UIView?
     var startingFrame: CGRect?
     
+    let activityIndicator = ActivityIndicator()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         TabBarViewController.setBackgroundColor(vc: self.view)
         setupViewComponents()
         setupButtonComponents()
+        activityIndicator.hideActivityIndicator()
     }
     
     func setupViewComponents() {

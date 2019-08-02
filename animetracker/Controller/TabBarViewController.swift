@@ -17,6 +17,7 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         self.delegate = self
         checkIfUserIsLoggedIn()
+        
     }
     
     // User authentication referenced from Let's Build That App's "Logging in with Email and Password" video https://www.letsbuildthatapp.com/course_video?id=61
@@ -24,8 +25,8 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleSignOut), with: nil, afterDelay: 0)
         } else {
-            reloadViewControllers()
             setupNavTabBars()
+            reloadViewControllers()
         }
     }
     

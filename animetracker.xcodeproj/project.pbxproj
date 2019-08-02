@@ -12,6 +12,7 @@
 		C309649522D6AFF800C9D2E2 /* Anime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C309649422D6AFF800C9D2E2 /* Anime.swift */; };
 		C30BBEB022E3DDD500C10893 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30BBEAF22E3DDD500C10893 /* User.swift */; };
 		C320B2B322F17E7A00F00CD2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C320B2B222F17E7A00F00CD2 /* Constants.swift */; };
+		C347DC3D22F41C3400F08E60 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DC3C22F41C3300F08E60 /* ActivityIndicator.swift */; };
 		C34E9B8622E258E50022D3EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */; };
 		C37752DC22EBBC820086B70C /* TabBarViewController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */; };
 		C37752DE22EBBF270086B70C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DD22EBBF270086B70C /* Extensions.swift */; };
@@ -40,6 +41,7 @@
 		C309649422D6AFF800C9D2E2 /* Anime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime.swift; sourceTree = "<group>"; };
 		C30BBEAF22E3DDD500C10893 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C320B2B222F17E7A00F00CD2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C347DC3C22F41C3300F08E60 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarViewController+handlers.swift"; sourceTree = "<group>"; };
 		C37752DD22EBBF270086B70C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		C3DAF27C22D55BA7004B9AC3 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C347DC3C22F41C3300F08E60 /* ActivityIndicator.swift */,
 				C309649222D6AACD00C9D2E2 /* AnimeCell.swift */,
 			);
 			path = View;
@@ -309,6 +312,7 @@
 				C37752DE22EBBF270086B70C /* Extensions.swift in Sources */,
 				C3DAF27922D55B48004B9AC3 /* JikanClient.swift in Sources */,
 				C3DAF28022D56A8C004B9AC3 /* SignUpViewController.swift in Sources */,
+				C347DC3D22F41C3400F08E60 /* ActivityIndicator.swift in Sources */,
 				C320B2B322F17E7A00F00CD2 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

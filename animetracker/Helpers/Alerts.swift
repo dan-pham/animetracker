@@ -24,12 +24,28 @@ struct Alerts {
         showBasicAlertVC(on: vc, with: "Sign In Failed", message: "Please enter your registered email and password")
     }
     
+    static func showAuthenticateUserFailedAlertVC(on vc: UIViewController, message: String) {
+        showBasicAlertVC(on: vc, with: "Sign In Failed", message: message)
+    }
+    
     static func showSignUpFailedAlertVC(on vc: UIViewController) {
         showBasicAlertVC(on: vc, with: "Sign Up Failed", message: "Please make sure you fill out every field")
     }
     
     static func showCreateUserFailedAlertVC(on vc: UIViewController, message: String) {
         showBasicAlertVC(on: vc, with: "Sign Up Failed", message: message)
+    }
+    
+    static func showSearchInformationFailedAlertVC(on vc: UIViewController) {
+        showBasicAlertVC(on: vc, with: "Search Failed", message: "Unable to retrieve the information for this anime. Please check your network connection and try again or try a different search term")
+    }
+    
+    static func showSearchImageUrlFailedAlertVC(on vc: UIViewController) {
+        showBasicAlertVC(on: vc, with: "Search Failed", message: "Unable to retrieve the image URL for this anime. Please check your network connection and try again or try a different search term")
+    }
+    
+    static func showSearchImageFailedAlertVC(on vc: UIViewController) {
+        showBasicAlertVC(on: vc, with: "Search Failed", message: "Unable to retrieve the image for this anime. Please check your network connection and try again or try a different search term")
     }
     
     private static func showConfirmationAlertVC(on vc: UIViewController, with title: String, message: String, action: UIAlertAction) {

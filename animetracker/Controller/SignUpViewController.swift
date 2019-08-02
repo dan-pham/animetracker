@@ -20,6 +20,8 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     
+    let activityIndicator = ActivityIndicator()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         TabBarViewController.setBackgroundColor(vc: self.view)
@@ -47,9 +49,12 @@ class SignUpViewController: UIViewController {
             return
         }
         
+        activityIndicator.showActivityIndicator()
+        
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             
             if let error = error {
+                self.activityIndicator.hideActivityIndicator()
                 Alerts.showCreateUserFailedAlertVC(on: self, message: "\(error.localizedDescription)")
                 print("Error creating user: ", error)
                 return
@@ -76,6 +81,7 @@ class SignUpViewController: UIViewController {
                 return
             }
             
+            self.activityIndicator.hideActivityIndicator()
             self.navigationController?.popViewController(animated: true)
         }
     }

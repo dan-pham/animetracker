@@ -52,7 +52,10 @@ class CurrentlyWatchingViewController: UITableViewController {
     
     // Observing snapshots from Firebase loosely referenced from Let's Build That App's "Firebase Chat Messenger" videos https://www.letsbuildthatapp.com/course/Firebase-Chat-Messenger
     func observeUserAnimes() {
-        let uid = Auth.auth().currentUser!.uid
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
         let ref = Database.database().reference().child(Constants.userCurrentlyWatching).child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
             
@@ -97,6 +100,7 @@ class CurrentlyWatchingViewController: UITableViewController {
         let imageView = UIImageView()
         imageView.loadImageUsingCacheWithUrlString(imageUrl)
         anime.image = imageView.image
+        
         return anime
     }
     
@@ -128,8 +132,9 @@ class CurrentlyWatchingViewController: UITableViewController {
         
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         TabBarViewController.presentDetailVC(vc: self, animes: animes, indexPath: indexPath)
     }
 

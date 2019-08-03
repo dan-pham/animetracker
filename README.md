@@ -5,6 +5,7 @@ download animes and utilizes Firebase to save user registration information, as 
 ## Technical Requirements
 * iOS Version 12.3+
 * Xcode Version 10.3
+* Swift Version 5
 
 ## Build Instructions
 1. Download the project's ZIP file and extract the project's files

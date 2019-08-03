@@ -27,29 +27,6 @@ class CurrentlyWatchingViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    // Swipe to Delete feature referenced from Let's Build That App's "How to Swipe and Delete Messages in UITableView" video https://www.letsbuildthatapp.com/course_video?id=232
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let uid = Auth.auth().currentUser!.uid
-        let anime = self.animes[indexPath.row]
-        
-        if let animeId = anime.id {
-            Database.database().reference().child(Constants.userCurrentlyWatching).child(uid).child(animeId).removeValue { (error, ref) in
-                
-                if error != nil {
-                    print("Failed to delete anime: ", error!.localizedDescription)
-                    return
-                }
-                
-                self.animesDictionary.removeValue(forKey: animeId)
-                self.handleReloadTable()
-            }
-        }
-    }
-    
     // Observing snapshots from Firebase loosely referenced from Let's Build That App's "Firebase Chat Messenger" videos https://www.letsbuildthatapp.com/course/Firebase-Chat-Messenger
     func observeUserAnimes() {
         guard let uid = Auth.auth().currentUser?.uid else {
@@ -115,6 +92,34 @@ class CurrentlyWatchingViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
+}
+
+// MARK: - UITableView delegate methods
+
+extension CurrentlyWatchingViewController {
+    
+    // Swipe to Delete feature referenced from Let's Build That App's "How to Swipe and Delete Messages in UITableView" video https://www.letsbuildthatapp.com/course_video?id=232
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let uid = Auth.auth().currentUser!.uid
+        let anime = self.animes[indexPath.row]
+        
+        if let animeId = anime.id {
+            Database.database().reference().child(Constants.userCurrentlyWatching).child(uid).child(animeId).removeValue { (error, ref) in
+                
+                if error != nil {
+                    print("Failed to delete anime: ", error!.localizedDescription)
+                    return
+                }
+                
+                self.animesDictionary.removeValue(forKey: animeId)
+                self.handleReloadTable()
+            }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return animes.count
@@ -132,10 +137,9 @@ class CurrentlyWatchingViewController: UITableViewController {
         
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         TabBarViewController.presentDetailVC(vc: self, animes: animes, indexPath: indexPath)
     }
-
+    
 }

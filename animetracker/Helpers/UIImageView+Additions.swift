@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  UIImageView+Additions
 //  animetracker
 //
 //  Created by Dan Pham on 7/26/19.

@@ -44,6 +44,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                 if let imageUrl = imageUrl {
                     JikanClient.sharedInstance.retrieveAnimeImage(imageUrl) { (success, image, error) in
                         if error != nil {
+                            self.activityIndicator.hideActivityIndicator()
                             Alerts.showSearchImageFailedAlertVC(on: self)
                             debugPrint("Error: ", error)
                         }
@@ -67,16 +68,23 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                         }
                     }
                 } else {
+                    self.activityIndicator.hideActivityIndicator()
                     Alerts.showSearchImageUrlFailedAlertVC(on: self)
                     print("error: ", error!.localizedDescription)
                 }
             } else {
+                self.activityIndicator.hideActivityIndicator()
                 Alerts.showSearchInformationFailedAlertVC(on: self)
                 print("error: ", error!.localizedDescription)
             }
         }
         self.view.endEditing(true)
     }
+}
+
+// MARK: - UITableView delegate methods
+
+extension SearchViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return animes.count
@@ -88,7 +96,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellId, for: indexPath) as! AnimeCell
-
+        
         let animeCell = animes[indexPath.row]
         cell.anime = animeCell
         

@@ -15,7 +15,7 @@
 		C347DC3D22F41C3400F08E60 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347DC3C22F41C3300F08E60 /* ActivityIndicator.swift */; };
 		C34E9B8622E258E50022D3EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */; };
 		C37752DC22EBBC820086B70C /* TabBarViewController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */; };
-		C37752DE22EBBF270086B70C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DD22EBBF270086B70C /* Extensions.swift */; };
+		C37752DE22EBBF270086B70C /* UIImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37752DD22EBBF270086B70C /* UIImageView+Additions.swift */; };
 		C3DAF26622D53C60004B9AC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DAF26522D53C60004B9AC3 /* AppDelegate.swift */; };
 		C3DAF26822D53C60004B9AC3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DAF26722D53C60004B9AC3 /* DetailViewController.swift */; };
 		C3DAF26B22D53C60004B9AC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3DAF26922D53C60004B9AC3 /* Main.storyboard */; };
@@ -44,7 +44,7 @@
 		C347DC3C22F41C3300F08E60 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		C34E9B8522E258E50022D3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C37752DB22EBBC810086B70C /* TabBarViewController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarViewController+handlers.swift"; sourceTree = "<group>"; };
-		C37752DD22EBBF270086B70C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		C37752DD22EBBF270086B70C /* UIImageView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Additions.swift"; sourceTree = "<group>"; };
 		C3DAF26222D53C60004B9AC3 /* animetracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = animetracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DAF26522D53C60004B9AC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3DAF26722D53C60004B9AC3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 			children = (
 				C3E7E53D22DFBF7F0009D196 /* Alerts.swift */,
 				C320B2B222F17E7A00F00CD2 /* Constants.swift */,
-				C37752DD22EBBF270086B70C /* Extensions.swift */,
+				C37752DD22EBBF270086B70C /* UIImageView+Additions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 				C3E7E53822DFBB840009D196 /* CurrentlyWatchingViewController.swift in Sources */,
 				C3DAF26622D53C60004B9AC3 /* AppDelegate.swift in Sources */,
 				C37752DC22EBBC820086B70C /* TabBarViewController+handlers.swift in Sources */,
-				C37752DE22EBBF270086B70C /* Extensions.swift in Sources */,
+				C37752DE22EBBF270086B70C /* UIImageView+Additions.swift in Sources */,
 				C3DAF27922D55B48004B9AC3 /* JikanClient.swift in Sources */,
 				C3DAF28022D56A8C004B9AC3 /* SignUpViewController.swift in Sources */,
 				C347DC3D22F41C3400F08E60 /* ActivityIndicator.swift in Sources */,
